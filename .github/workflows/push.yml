@@ -17,12 +17,12 @@ jobs:
       - name: Config git username
         run: |
           echo '${{ github.event.commits[0].author.name }}'
-          git config --global user.name '${{ github.event.commits[0].author.name }}'
+          git config --global user.name 'dependabot[bot]'
 
       - name: Config git email
         run: |
           echo '${{ github.event.commits[0].author.email }}'
-          git config --global user.email '${{ github.event.commits[0].author.email }}'
+          git config --global user.email '49699333+dependabot[bot]@users.noreply.github.com'
 
       - name: Add changes
         run: git add .
