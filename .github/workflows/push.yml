@@ -1,0 +1,37 @@
+name: Push
+
+on: [push]
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Copy file
+        run: cp main.txt push.txt
+
+      - name: Config git username
+        run: |
+          echo '${{ github.event.commits[0].author.name }}'
+          git config --global user.name '${{ github.event.commits[0].author.name }}'
+
+      - name: Config git email
+        run: |
+          echo '${{ github.event.commits[0].author.email }}'
+          git config --global user.email '${{ github.event.commits[0].author.email }}'
+
+      - name: Add changes
+        run: git add .
+
+      - name: Commit changes
+        run: git commit -m "update push.txt"
+
+      - name: Set remote origin
+        run: git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git"
+
+      - name: Push changes
+        run: git push
